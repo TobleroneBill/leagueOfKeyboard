@@ -6,9 +6,10 @@ The example in question was a single keyCombo of windows+tab, so maybe not as im
 
 ### CONTROLS: 
 - up down left right - moves in those Axis
-- shift + up,down,left,right - moves double those axis
+- ~~shift + up,down,left,right - moves double those axis~~
 - ctrl - Recenter
 - / - Unlock mouse
+- Caps Lock - Toggle between: short range, long range, mixed (max range, but short step)
 - ` (tilde (next to 1)) - cancel execution
 
 To use this effectively, you need to make sure you use:
