@@ -1,16 +1,23 @@
 import pyautogui
 import keyboard
 
-movementSizeMax = 400
-movementSizestep = 200
-movementSize = movementSizeMax
 
 
 centerx, centery = pyautogui.size().width/2, pyautogui.size().height/2
 
+
+
+movementSizeMax = centerx/2.5
+movementSizestep = movementSizeMax/2
+movementSize = movementSizeMax
+
+ADCRange = movementSizeMax
+MeleeRange = movementSizeMax/2
+
+
+
 xRight = centerx + movementSizeMax
 xLeft = centerx - movementSizeMax
-
 yBot = centery + movementSizeMax
 yTop = centery - movementSizeMax
 
@@ -19,11 +26,45 @@ xPos = centerx
 yPos = centery
 
 toggleCenter = False
+meleeADCNormalSwitch = 0
+
+
 
 def ResetPos():
     global xPos,yPos
     xPos = centerx
     yPos = centery
+
+
+
+# Changes the range into 3 states, Melee range,ADC range, and a middleground range that has ADC size but melee step
+def SwapRange():
+    print('_____________________________________________________')
+    print('swapping')
+    global meleeADCNormalSwitch, movementSizeMax, movementSizestep ,xRight,xLeft,yBot,yTop, centerx
+    meleeADCNormalSwitch += 1
+    if meleeADCNormalSwitch > 2:
+        meleeADCNormalSwitch = 0
+
+    print(f'range ={meleeADCNormalSwitch}')
+    if meleeADCNormalSwitch == 0:
+        movementSizestep = MeleeRange
+        movementSizeMax = MeleeRange
+    elif meleeADCNormalSwitch == 1:
+        movementSizestep = ADCRange
+        movementSizeMax = ADCRange
+    elif meleeADCNormalSwitch == 2:
+        movementSizestep = movementSizeMax / 2
+        movementSizeMax = centerx / 2.5
+
+    xRight = centerx + movementSizeMax
+    xLeft = centerx - movementSizeMax
+    yBot = centery + movementSizeMax
+    yTop = centery - movementSizeMax
+
+    print(f'Step size: {movementSizestep}')
+    print(f'maxMove = {movementSizeMax}')
+    ResetPos()
 
 def print_hi():
     print('hi')
@@ -87,18 +128,24 @@ def MouseToKey(key):
 
         case 'left':
             if xPos == xLeft:
-                yPos = centery
+                if yPos < centery:
+                    yPos += movementSizestep
+                if yPos > centery:
+                    yPos -= movementSizestep
             if xPos > xLeft:
                 newPos = xPos - movementSizestep
                 xPos = newPos
         case 'right':
             if xPos == xRight:
-                yPos = centery
+                if yPos < centery:
+                    yPos += movementSizestep
+                if yPos > centery:
+                    yPos -= movementSizestep
             if xPos < xRight:
                 newPos = xPos + movementSizestep
                 xPos = newPos
 
-    # ____________________________Close Positions______________________________#
+    # ____________________________Far Positions______________________________#
         # because of my bad inital setup, of getting each needed key as a hot key
         # This has to be done the long way. Ideally I would just have a HalfSize boolean that gets toggled if
         # shift is pressed.
@@ -139,9 +186,7 @@ def MouseToKey(key):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-
-
-    #____________________________Far Positions______________________________#
+    #____________________________Close Positions______________________________#
     keyboard.add_hotkey('up',lambda: MouseToKey('up'),timeout=0)
     keyboard.add_hotkey('up + left',lambda: MouseToKey('upLeft'),timeout=0)
     keyboard.add_hotkey('up + Right',lambda: MouseToKey('upRight'),timeout=0)
@@ -155,15 +200,19 @@ if __name__ == '__main__':
     keyboard.add_hotkey('right', lambda: MouseToKey('right'),timeout=0)
     keyboard.add_hotkey('m', lambda: MouseToKey('right alt'),timeout=0)
 
-    # ____________________________Close Positions______________________________#
+    # ____________________________Far Positions______________________________#
+    # Makes Range smaller or bigger for ADC, vs Melee/.
+    keyboard.add_hotkey('capslock',lambda: SwapRange())
+
+    # Use if you want a worse experience
+    '''
     keyboard.add_hotkey('up+shift',lambda: MouseToKey('upshift'),timeout=0)
     keyboard.add_hotkey('down+shift',lambda: MouseToKey('downshift'),timeout=0)
 
     keyboard.add_hotkey('left+shift',lambda: MouseToKey('leftshift'),timeout=0)
     keyboard.add_hotkey('right+shift',lambda: MouseToKey('rightshift'),timeout=0)
+    '''
 
-
-    invertBool = lambda g: not g
 
     # I fucking hate this janky shitty module MAKE A BETTER THING omzomgroemageinrgaleijrgalerglahrelkaheroa
     Toggle = True
