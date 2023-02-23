@@ -72,6 +72,9 @@ def print_hi():
 def MouseToKey(key):
     global toggleCenter,yPos,xPos
 
+    print(f'Key Pressed: {key}')
+
+
     match key:
     #____________________________Far Positions______________________________#
         case 'upLeft':
@@ -220,6 +223,7 @@ if __name__ == '__main__':
     def invertToggle():
         global Toggle
         Toggle = not Toggle
+        print(f'LockedMouse: {Toggle}')
 
     keyboard.add_hotkey('/', invertToggle)
 
@@ -236,5 +240,5 @@ if __name__ == '__main__':
             pyautogui.moveTo(xPos, yPos)
 
         if keyboard.is_pressed('right control'):
-            print("ok")
+            print("Mouse Centered")
             ResetPos()
