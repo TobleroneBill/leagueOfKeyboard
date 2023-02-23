@@ -1,6 +1,8 @@
 # HELLO COCHELLA
 
-this is a script that lets u use keyboard input
+
+this is a script that lets u use keyboard input for league of legends
+
 The actual programming side is pretty caveman, but i think python is just bad for detecting input. Tried a version previously or C++, and it had 0 input lag or anything.
 The example in question was a single keyCombo of windows+tab, so maybe not as impressive as a continuoius input detection loop, but felt far quicker (maybe because it uses less cpu idk)
 
